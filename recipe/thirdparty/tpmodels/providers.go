@@ -15,6 +15,8 @@
 
 package tpmodels
 
+import "github.com/supertokens/supertokens-golang/supertokens"
+
 type GoogleConfig struct {
 	ClientID              string
 	ClientSecret          string
@@ -69,12 +71,34 @@ type AppleConfig struct {
 	Scope                 []string
 	AuthorisationRedirect *struct {
 		Params map[string]interface{}
-	}
-	IsDefault bool
+	} // Deprecated
+	IsDefault bool // Deprecated
 }
 
 type AppleClientSecret struct {
 	KeyId      string
 	PrivateKey string
 	TeamId     string
+}
+
+type TypeOktaInput struct {
+	Config   []OktaConfig
+	Override func(provider OktaProvider) OktaProvider
+}
+
+type OktaConfig struct {
+	ClientID               string
+	ClientSecret           string
+	OktaDomain             string
+	Scope                  []string
+	PKCEBackendFlowEnabled bool
+}
+
+type OktaProvider struct {
+	GetConfig func(clientID string, userContext supertokens.UserContext) (OktaConfig, error)
+
+	GenerateState                  func() (string, error)
+	GetAuthorisationRedirectURL    func(input TypeGetAuthorisationRedirectURLInput, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
+	ExchangeAuthCodeForOAuthTokens func(input TypeExchangeAuthCodeForOAuthTokensInput, userContext supertokens.UserContext) (TypeOAuthTokens, error)
+	GetUserInfo                    func(input TypeGetUserInfoInput, userContext supertokens.UserContext) (TypeUserInfo, error)
 }

@@ -49,12 +49,6 @@ type AuthorisationRedirect struct {
 	Params map[string]interface{}
 }
 
-type TypeProvider struct {
-	ID        string
-	Get       func(redirectURI *string, authCodeFromRequest *string, userContext supertokens.UserContext) TypeProviderGetResponse
-	IsDefault bool
-}
-
 type User struct {
 	ID         string `json:"id"`
 	TimeJoined uint64 `json:"timeJoined"`

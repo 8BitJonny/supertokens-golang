@@ -25,9 +25,16 @@ import (
 )
 
 type APIInterface struct {
-	AuthorisationUrlGET      *func(provider TypeProvider, options APIOptions, userContext supertokens.UserContext) (AuthorisationUrlGETResponse, error)
-	SignInUpPOST             *func(provider TypeProvider, code string, authCodeResponse interface{}, redirectURI string, options APIOptions, userContext supertokens.UserContext) (SignInUpPOSTResponse, error)
-	AppleRedirectHandlerPOST *func(code string, state string, options APIOptions, userContext supertokens.UserContext) error
+	GenerateStateGET    *func(provider *TypeProvider, userContext supertokens.UserContext) (GenerateStateGETResponse, error)
+	AuthorisationUrlGET *func(provider *TypeProvider, input TypeGetAuthorisationRedirectURLInput, options APIOptions, userContext supertokens.UserContext) (AuthorisationUrlGETResponse, error)
+	SignInUpPOST        *func(provider *TypeProvider, input TypeSignInUpInput, options APIOptions, userContext supertokens.UserContext) (SignInUpPOSTResponse, error)
+
+	AppleRedirectHandlerPOST *func(infoFromProvider map[string]interface{}, options APIOptions, userContext supertokens.UserContext) error
+}
+
+type GenerateStateGETResponse struct {
+	OK           *struct{ State string }
+	GeneralError *supertokens.GeneralErrorResponse
 }
 
 type AuthorisationUrlGETResponse struct {
