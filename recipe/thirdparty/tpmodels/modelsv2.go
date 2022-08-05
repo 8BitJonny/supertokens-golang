@@ -4,17 +4,20 @@ import (
 	"github.com/supertokens/supertokens-golang/supertokens"
 )
 
+type TypeProvider struct {
+	ID string
+
+	GetAuthorisationRedirectURL    func(clientID string, redirectURI string, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
+	ExchangeAuthCodeForOAuthTokens func(clientID string, callbackInfo TypeCallbackInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error) // For apple, add userInfo from callbackInfo to oAuthTOkens
+	GetUserInfo                    func(clientID string, oAuthTokens TypeOAuthTokens, userContext supertokens.UserContext) (TypeUserInfo, error)
+}
+
 type TypeCallbackQueryParams map[string]interface{}
 type TypeOAuthTokens map[string]interface{}
 
-type TypeCallbackInfo struct {
-	URI         string
-	QueryParams TypeCallbackQueryParams
-}
-
 type TypeAuthorisationRedirect struct {
-	URL         string
-	QueryParams map[string]interface{}
+	URLWithQueryParams string
+	PKCECodeVerifier   *string
 }
 
 type TypeEmailInfo struct {
@@ -28,40 +31,24 @@ type TypeUserInfo struct {
 	RawResponseFromProvider map[string]interface{} `json:"rawResponseFromProvider"`
 }
 
-type TypeProvider struct {
-	ID string
-
-	GenerateState                  func() (string, error)
-	GetAuthorisationRedirectURL    func(input TypeGetAuthorisationRedirectURLInput, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
-	ExchangeAuthCodeForOAuthTokens func(input TypeExchangeAuthCodeForOAuthTokensInput, userContext supertokens.UserContext) (TypeOAuthTokens, error)
-	GetUserInfo                    func(input TypeGetUserInfoInput, userContext supertokens.UserContext) (TypeUserInfo, error)
-}
-
-type TypeGetAuthorisationRedirectURLInput struct {
-	ClientID    string
-	CallbackURI string
-}
-
-type TypeExchangeAuthCodeForOAuthTokensInput struct {
-	ClientID     string
-	CallbackInfo TypeCallbackInfo
-}
-
-type TypeGetUserInfoInput struct {
-	ClientID     string
-	CallbackInfo TypeCallbackInfo
-	OAuthTokens  TypeOAuthTokens
+type TypeCodeChallenge struct {
+	CodeChallenge       string
+	CodeChallengeMethod string
 }
 
 type TypeSignInUpInput struct {
-	ClientID     string
-	State        string
+	// Either of the below
 	CallbackInfo *TypeCallbackInfo
 	OAuthTokens  *TypeOAuthTokens
 }
 
+type TypeCallbackInfo struct {
+	RedirectURI            string
+	RedirectURIQueryParams *TypeCallbackQueryParams // This is separate because of apple
+	PKCECodeVerifier       *string                  // Optional, if PKCE enabled
+}
+
 type TypeResponsesFromProvider struct {
-	CallbackInfo *TypeCallbackInfo
-	OAuthTokens  *TypeOAuthTokens
-	UserInfo     *map[string]interface{}
+	OAuthTokens *TypeOAuthTokens
+	UserInfo    *map[string]interface{}
 }

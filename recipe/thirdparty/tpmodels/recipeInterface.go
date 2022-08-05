@@ -22,9 +22,6 @@ type RecipeInterface struct {
 	GetUsersByEmail         *func(email string, userContext supertokens.UserContext) ([]User, error)
 	GetUserByThirdPartyInfo *func(thirdPartyID string, thirdPartyUserID string, userContext supertokens.UserContext) (*User, error)
 	SignInUp                *func(thirdPartyID string, thirdPartyUserID string, email TypeEmailInfo, responsesFromProvider TypeResponsesFromProvider, userContext supertokens.UserContext) (SignInUpResponse, error)
-
-	SetStateContextValue *func(state string, key string, value interface{}, ttl int) error
-	GetStateContextValue *func(state string, key string) (interface{}, bool, error)
 }
 
 type SignInUpResponse struct {

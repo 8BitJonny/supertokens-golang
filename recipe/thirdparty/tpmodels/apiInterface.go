@@ -25,32 +25,34 @@ import (
 )
 
 type APIInterface struct {
-	GenerateStateGET    *func(provider *TypeProvider, userContext supertokens.UserContext) (GenerateStateGETResponse, error)
-	AuthorisationUrlGET *func(provider *TypeProvider, input TypeGetAuthorisationRedirectURLInput, options APIOptions, userContext supertokens.UserContext) (AuthorisationUrlGETResponse, error)
-	SignInUpPOST        *func(provider *TypeProvider, input TypeSignInUpInput, options APIOptions, userContext supertokens.UserContext) (SignInUpPOSTResponse, error)
+	AuthorisationUrlGET *func(provider *TypeProvider, clientID string, redirectURI string, options APIOptions, userContext supertokens.UserContext) (AuthorisationUrlGETResponse, error)
+	SignInUpPOST        *func(provider *TypeProvider, clientID string, input TypeSignInUpInput, options APIOptions, userContext supertokens.UserContext) (SignInUpPOSTResponse, error)
 
 	AppleRedirectHandlerPOST *func(infoFromProvider map[string]interface{}, options APIOptions, userContext supertokens.UserContext) error
-}
-
-type GenerateStateGETResponse struct {
-	OK           *struct{ State string }
-	GeneralError *supertokens.GeneralErrorResponse
+	// BackendRedirectHandlerPOST *func(provider *TypeProvider, options APIOptions, userContext supertokens.UserContext) error
 }
 
 type AuthorisationUrlGETResponse struct {
-	OK           *struct{ Url string }
+	OK           *TypeAuthorisationRedirect
 	GeneralError *supertokens.GeneralErrorResponse
 }
 
 type SignInUpPOSTResponse struct {
 	OK *struct {
-		CreatedNewUser   bool
-		User             User
-		Session          sessmodels.SessionContainer
-		AuthCodeResponse interface{}
+		CreatedNewUser        bool
+		User                  User
+		Session               sessmodels.SessionContainer
+		ResponsesFromProvider TypeResponsesFromProvider
 	}
 	NoEmailGivenByProviderError *struct{}
 	GeneralError                *supertokens.GeneralErrorResponse
+}
+
+type BackendToFrontendRedirectHandlerResponse struct {
+	OK *struct {
+		Url string
+	}
+	GeneralError *supertokens.GeneralErrorResponse
 }
 
 type APIOptions struct {
