@@ -8,11 +8,11 @@ type TypeProvider struct {
 	ID string
 
 	GetAuthorisationRedirectURL    func(clientID *string, redirectURI string, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
-	ExchangeAuthCodeForOAuthTokens func(clientID *string, callbackInfo TypeCallbackInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error) // For apple, add userInfo from callbackInfo to oAuthTOkens
+	ExchangeAuthCodeForOAuthTokens func(clientID *string, redirectInfo TypeRedirectURIInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error) // For apple, add userInfo from callbackInfo to oAuthTOkens
 	GetUserInfo                    func(clientID *string, oAuthTokens TypeOAuthTokens, userContext supertokens.UserContext) (TypeUserInfo, error)
 }
 
-type TypeCallbackQueryParams map[string]interface{}
+type TypeRedirectURIQueryParams map[string]interface{}
 type TypeOAuthTokens map[string]interface{}
 
 type TypeAuthorisationRedirect struct {
@@ -38,14 +38,14 @@ type TypeCodeChallenge struct {
 
 type TypeSignInUpInput struct {
 	// Either of the below
-	CallbackInfo *TypeCallbackInfo
-	OAuthTokens  *TypeOAuthTokens
+	RedirectURIInfo *TypeRedirectURIInfo
+	OAuthTokens     *TypeOAuthTokens
 }
 
-type TypeCallbackInfo struct {
+type TypeRedirectURIInfo struct {
 	RedirectURI            string
-	RedirectURIQueryParams *TypeCallbackQueryParams // This is separate because of apple
-	PKCECodeVerifier       *string                  // Optional, if PKCE enabled
+	RedirectURIQueryParams *TypeRedirectURIQueryParams // This is separate because of apple
+	PKCECodeVerifier       *string                     // Optional, if PKCE enabled
 }
 
 type TypeResponsesFromProvider struct {

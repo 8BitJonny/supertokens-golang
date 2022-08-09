@@ -23,7 +23,7 @@ type AppleProvider struct {
 	GetConfig func(clientID *string, userContext supertokens.UserContext) (AppleConfig, error)
 
 	GetAuthorisationRedirectURL    func(clientID *string, redirectURI string, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
-	ExchangeAuthCodeForOAuthTokens func(clientID *string, callbackInfo TypeCallbackInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error)
+	ExchangeAuthCodeForOAuthTokens func(clientID *string, callbackInfo TypeRedirectURIInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error)
 	GetUserInfo                    func(clientID *string, oAuthTokens TypeOAuthTokens, userContext supertokens.UserContext) (TypeUserInfo, error)
 }
 
@@ -43,6 +43,6 @@ type OktaProvider struct {
 	GetConfig func(clientID *string, userContext supertokens.UserContext) (OktaConfig, error)
 
 	GetAuthorisationRedirectURL    func(clientID *string, redirectURI string, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
-	ExchangeAuthCodeForOAuthTokens func(clientID *string, callbackInfo TypeCallbackInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error)
+	ExchangeAuthCodeForOAuthTokens func(clientID *string, callbackInfo TypeRedirectURIInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error)
 	GetUserInfo                    func(clientID *string, oAuthTokens TypeOAuthTokens, userContext supertokens.UserContext) (TypeUserInfo, error)
 }
