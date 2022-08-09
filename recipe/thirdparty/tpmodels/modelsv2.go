@@ -7,9 +7,9 @@ import (
 type TypeProvider struct {
 	ID string
 
-	GetAuthorisationRedirectURL    func(clientID string, redirectURI string, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
-	ExchangeAuthCodeForOAuthTokens func(clientID string, callbackInfo TypeCallbackInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error) // For apple, add userInfo from callbackInfo to oAuthTOkens
-	GetUserInfo                    func(clientID string, oAuthTokens TypeOAuthTokens, userContext supertokens.UserContext) (TypeUserInfo, error)
+	GetAuthorisationRedirectURL    func(clientID *string, redirectURI string, userContext supertokens.UserContext) (TypeAuthorisationRedirect, error)
+	ExchangeAuthCodeForOAuthTokens func(clientID *string, callbackInfo TypeCallbackInfo, userContext supertokens.UserContext) (TypeOAuthTokens, error) // For apple, add userInfo from callbackInfo to oAuthTOkens
+	GetUserInfo                    func(clientID *string, oAuthTokens TypeOAuthTokens, userContext supertokens.UserContext) (TypeUserInfo, error)
 }
 
 type TypeCallbackQueryParams map[string]interface{}
